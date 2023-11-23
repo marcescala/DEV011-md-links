@@ -1,5 +1,6 @@
 // convertir a ruta absoluta
 const path = require('path');
+const fs = require('fs');
 const routeAbsolut = (route) => path.isAbsolute(route);
 const changeAbsolute = (route) =>{
   if(!routeAbsolut(route)) {
@@ -7,10 +8,13 @@ const changeAbsolute = (route) =>{
   }
   return route
 }
+const existRoute = (route) => fs.existsSync(route);
+
 
 module.exports = {
 	routeAbsolut,
 	changeAbsolute,
+  existRoute,
 };
 
 
