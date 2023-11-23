@@ -1,9 +1,14 @@
-const {routeAbsolut, changeAbsolute} = require('./functions')
+const {routeAbsolut, 
+    changeAbsolute, 
+    existRoute,
+} = require('./functions')
+
 const mdLinks = (path) => {
     return new Promise((resolve, reject) => {
         const valiteRoute = changeAbsolute(path);
         if(!valiteRoute)  reject(error);
-         resolve (valiteRoute)
+        const exists = (existRoute(valiteRoute));
+        resolve (exists)
         
     })
 }
