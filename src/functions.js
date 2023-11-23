@@ -23,16 +23,16 @@ module.exports = {
 // console.log('Extensión del archivo:', fileExtension);
 
 // lee los archivos
-const fs = require('fs');
+// const fs = require('fs');
 
-function readFile(path) {
-	return new Promise((resolve, reject) => {
-		fs.readFile(path, 'utf8', (error, data) => {
-			if (error) return reject(error);
-			return resolve(data);
-		});
-	});
-}
+// function readFile(path) {
+// 	return new Promise((resolve, reject) => {
+// 		fs.readFile(path, 'utf8', (error, data) => {
+// 			if (error) return reject(error);
+// 			return resolve(data);
+// 		});
+// 	});
+// }
 
 // readFile('./prueba/prueba.md')
 // 	.then(data => console.log(data))
