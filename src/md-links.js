@@ -1,6 +1,7 @@
 const {routeAbsolut, 
     changeAbsolute, 
     existRoute,
+    fileExtension
 } = require('./functions')
 
 const mdLinks = (path) => {
@@ -8,9 +9,15 @@ const mdLinks = (path) => {
         const valiteRoute = changeAbsolute(path);
         if(!valiteRoute)  reject(error);
         const exists = (existRoute(valiteRoute));
-        resolve (exists)
-        
-    })
+        if (exists === true){ 
+            const fileGood = fileExtension(valiteRoute);
+            resolve(fileGood);
+        } 
+        // else {
+        //     reject(error) 
+        //     };
+       
+    });
 }
 
 module.exports = {
