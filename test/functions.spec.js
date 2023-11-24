@@ -1,12 +1,23 @@
-const {changeAbsolute, existRoute, fileExtension} = require('../src/functions.js');
+const { 
+  routeAbsolut,
+  changeAbsolute, 
+  existRoute, 
+  fileExtension} = require('../src/functions.js');
 const { mdLinks } = require('../src/md-links.js');
 
 describe('mdLinks', () => {
   it('es una promesa', () => {
     const route = mdLinks('./prueba/prueba.md')
     expect(route).resolves.toEqual('/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md')
-  })
+  });
 }) 
+
+describe('routeAbsolut', () => {
+  it('comprueba que sea Absoluta', () => {
+    const route = routeAbsolut('./prueba/pru.md')
+    expect(route).toBe(false);
+  });
+})
 
 describe('ChangeAbsolute', () => {
   it('cambia a ruta absoluta', () => {
