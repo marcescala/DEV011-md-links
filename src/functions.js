@@ -15,26 +15,29 @@ const existRoute = (route) => fs.existsSync(route);
 const fileExtension = (route) => {
   const extensionRoute = path.extname(route);
   if( extensionRoute.includes('.md', '.mkd', '.mdwn', '.mdown', '.mdtxt', '.mdtext', '.markdown', '.text')){
-    return route;
+    return route
   } 
 }  
 
 const readRoute = (route) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(route, 'utf8', (error, data) => {
+    fs.readFile(route, (error, data) => {
       if (error) {
-        reject(error);
-      } else {
-        resolve(data);
-      }
+        return reject(error);
+      } return resolve(data.toString());
     });
   });
 };
 
-const extracLinks = (data) => {
-  
 
-}
+// const extracLinks = (data) => {
+//   const regex = ('(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?');
+
+//   while (condition) {
+    
+//   }
+
+// }
 
 module.exports = {
 	routeAbsolut,
@@ -45,20 +48,4 @@ module.exports = {
 };
 
 
-
-// lee los archivos
-// const fs = require('fs');
-
-// function readFile(path) {
-// 	return new Promise((resolve, reject) => {
-// 		fs.readFile(path, 'utf8', (error, data) => {
-// 			if (error) return reject(error);
-// 			return resolve(data);
-// 		});
-// 	});
-// }
-
-// readFile('./prueba/prueba.md')
-// 	.then(data => console.log(data))
-// 	.catch(error => console.error(error));
 // const patronURL = new RegExp('(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?');

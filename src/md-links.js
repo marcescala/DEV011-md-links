@@ -1,23 +1,22 @@
 const {routeAbsolut, 
     changeAbsolute, 
     existRoute,
-    fileExtension
+    fileExtension,
+    readRoute,
 } = require('./functions')
 
 const mdLinks = (path) => {
     return new Promise((resolve, reject) => {
         const valiteRoute = changeAbsolute(path);
-        console.log(valiteRoute);
         const exists = existRoute(valiteRoute);
         if(!exists)  {
-            reject('existe un error, la ruta no existe o el ')
-
+            reject('existe un error')
         }
         else { 
             const fileGood = fileExtension(valiteRoute);
-            resolve(fileGood);
+            const readFile = readRoute(fileGood)
+            resolve(readFile);
         } 
-       
     });
 }
 
