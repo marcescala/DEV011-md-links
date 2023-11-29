@@ -4,15 +4,21 @@ const {
   existRoute, 
   fileExtension,
   readRoute,
+  extractLinks,
 } = require('../src/functions.js');
 const { mdLinks } = require('../src/md-links.js');
 
-// describe('mdLinks', () => {
-//   it('resuelve ...', () => {
-//     const route = mdLinks('./prueba/prueba.md')
-//     expect(route).resolves.toEqual('/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md')
-//   });
-// });
+describe('mdLinks', () => {
+  it('resuelve ...', () => {
+    const route = mdLinks('./test/molienda.mdwn')
+    expect(route).resolves.toEqual([
+      {
+        'url': 'https://es.wikipedia.org/wiki/Markdown',
+        'text': 'Markdown',
+        'file': '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn'
+      }]);
+  });
+});
 
 describe('routeAbsolut', () => {
   it('comprueba que sea Absoluta', () => {
@@ -51,4 +57,21 @@ describe('readRoute', () => {
     const read = readRoute('./prueba/prueba.md');
   expect(typeof read).toEqual('object');
   });
+  it('lee el archivo', () =>{
+    const read = readRoute('./test/molienda.mdwn');
+    
+    expect(read).resolves.toBe('[Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado');
+
+  })
+})
+
+describe('extractLinks', () => {
+  it('extrae los links', () => {
+    const links = extractLinks('./prueba/prueba.md');
+    const result = []
+    expect(links).toEqual(result);
+
+  }
+
+  )
 })
