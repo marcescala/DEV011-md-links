@@ -18,6 +18,10 @@ describe('mdLinks', () => {
         'file': '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn'
       }]);
   });
+  it('reject ...', () => {
+    const route = mdLinks('./test/molienda.js')
+    expect(route).rejects.toEqual('existe un error');
+  });
 });
 
 describe('routeAbsolut', () => {
@@ -59,19 +63,31 @@ describe('readRoute', () => {
   });
   it('lee el archivo', () =>{
     const read = readRoute('./test/molienda.mdwn');
-    
     expect(read).resolves.toBe('[Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado');
-
-  })
+  });
+  it('hay un error', () => {
+    const read = readRoute('./test/nadas.md');
+    expect(read).rejects.toThrowError();
+  });
 })
 
 describe('extractLinks', () => {
-  it('extrae los links', () => {
+  it('crea un objeto', () => {
     const links = extractLinks('./prueba/prueba.md');
     const result = []
     expect(links).toEqual(result);
-
-  }
-
-  )
+  });
+  it('extrae los links', () => {
+  const data = '[Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado'
+  const route = '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn'
+  const links = extractLinks(data, route);
+  const result = [
+    {
+    url: 'https://es.wikipedia.org/wiki/Markdown',
+    text: 'Markdown',
+    file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn'
+   }
+  ];
+  expect(links).toEqual(result)
+  });
 })

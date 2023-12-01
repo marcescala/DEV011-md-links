@@ -1,5 +1,5 @@
 const {mdLinks} = require ('./md-links');
 
-mdLinks('./prueba/prueba.md')
-	.then(data => console.log(data))
+mdLinks('./test/molienda.mdwn')
+	.then(data => console.log('hola', data))
 	.catch(error => console.error(error));
