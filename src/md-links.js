@@ -19,12 +19,11 @@ const mdLinks = (path) => {
       readFile
         .then((data) => {
           const links = extractLinks(data, valiteRoute);
-          return validateLink(links);
+           validateLink(links)
+           .then((validateLink) => {
+             resolve (validateLink)
+           })
         })
-        .then((validateLinks) => {
-          resolve (validateLinks)
-        })
-          
         .catch((error) => {
           reject(error);
         });
