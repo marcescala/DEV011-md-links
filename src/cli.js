@@ -1,5 +1,6 @@
 const {mdLinks} = require ('./md-links');
+const validate = false;
 
-mdLinks('./test/molienda.mdwn')
-	.then(data => console.log('hola', data))
+mdLinks('prueba/prueba.md', validate)
+	.then(links => console.log(links))
 	.catch(error => console.error(error));

@@ -5,8 +5,12 @@ const {
   fileExtension,
   readRoute,
   extractLinks,
+  validateLink,
 } = require('../src/functions.js');
 const { mdLinks } = require('../src/md-links.js');
+const axios = require('axios');
+
+jest.mock('axios');
 
 describe('mdLinks', () => {
   it('resuelve ...', () => {
@@ -20,7 +24,7 @@ describe('mdLinks', () => {
   });
   it('reject ...', () => {
     const route = mdLinks('./test/molienda.js')
-    expect(route).rejects.toEqual('existe un error');
+    expect(route).rejects.toEqual('Error: La ruta no existe');
   });
 });
 
@@ -71,6 +75,7 @@ describe('readRoute', () => {
   });
 })
 
+
 describe('extractLinks', () => {
   it('crea un objeto', () => {
     const links = extractLinks('./prueba/prueba.md');
@@ -91,3 +96,30 @@ describe('extractLinks', () => {
   expect(links).toEqual(result)
   });
 })
+
+describe('validateLink', () => {
+  it( 'valida los link con status y statusText', async () => {
+    axios.get.mockResolvedValue({ status: 200, statusText: 'OK' });
+    const links = [
+      {
+      url: 'https://es.wikipedia.org/wiki/Markdown',
+      text: 'Markdown',
+      file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn'
+     }
+    ];
+    const validate = await validateLink(links);
+    const result = [
+      {
+        url: 'https://es.wikipedia.org/wiki/Markdown',
+        text: 'Markdown',
+        file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn',
+        status: 200,
+        statusText: 'OK'
+      }
+    ];
+    expect(validate).toEqual(result)
+
+
+  })
+}
+)
