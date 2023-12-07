@@ -1,7 +1,6 @@
 const path = require("path");
 const fs = require("fs");
 const axios = require("axios");
-const { lookupService } = require("dns/promises");
 
 const routeAbsolut = (route) => path.isAbsolute(route);
 const changeAbsolute = (route) => {
@@ -54,18 +53,17 @@ const extractLinks = (data, route) => {
 };
 
 const validateLink = (links) => {
-  const newLInks = links.map((link) => {
-    const linksUrl = link.url;
+  const newLinks = links.map((link) => {
     return axios
-      .get(linksUrl)
+      .get(link.url)
       .then((response) => {
         return {...link, status: response.status, statusText: response.statusText}
       })
       .catch((error) => {
-        return {...link, status: "404", statusText: "fail"}
+        return {...link, status: error.response?.status ?? 'fail' , statusText: "fail"}
       });
   });
-  return Promise.all(newLInks)
+  return Promise.all(newLinks)
 };
 
 module.exports = {
