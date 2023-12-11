@@ -1,10 +1,10 @@
-const {mdLinks} = require ('./md-links');
-const validate = true; 
+const {mdLinks} = require('./md-links');
+const argv = process.argv
+const file = argv[2];
+const validate = argv.includes('--validate');
 
-const file = process.argv[2];
 
 
-
-mdLinks(file)
+mdLinks(file, validate)
 	.then(links => console.log(links))
 	.catch(error => console.error(error));
