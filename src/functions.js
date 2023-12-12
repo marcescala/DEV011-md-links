@@ -61,9 +61,40 @@ const validateLink = (links) => {
       })
       .catch((error) => {
         return {...link, status: error.response?.status ?? 'fail' , statusText: "fail"}
-      });
-  });
+      }); 
+      
+  }); 
+  
   return Promise.all(newLinks)
+  
+};
+
+// const statsLinks = (newLinks) => {
+//   return new Promise ((resolve, reject) => {
+//   const countLinks = newLinks.filter((link) => {
+//   return link.statusText == 'fail';
+//   });
+//   const totalLinks = newLinks.length;
+//   const uniqueLinks= [...new Set(newLinks.map((link) => link.url))].length;
+//   const validLinksCount = countLinks.length;
+//   console.log( totalLinks, uniqueLinks, validLinksCount, 'por aca');
+//   const statsValidate = {
+//     Total: totalLinks,
+//     Unique: uniqueLinks,
+//     Broken: validLinksCount
+//   };
+//     resolve(statsValidate);
+//   });
+// };
+
+const statsLinks = (links) => {
+  return new Promise((resolve, reject) => {
+    const Total = links.length;
+    const Unique = [...new Set(links.map((link) => link.url))].length;
+    const Broken = links.filter((link) => link.statusText === "fail").length;
+
+    resolve({ Total, Unique, Broken });
+  });
 };
 
 module.exports = {
@@ -74,4 +105,5 @@ module.exports = {
   readRoute,
   extractLinks,
   validateLink,
+  statsLinks,
 };
