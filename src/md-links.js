@@ -5,9 +5,10 @@ const {
   readRoute,
   extractLinks,
   validateLink,
+  statsLinks,
 } = require("./functions");
 
-const mdLinks = (path, validate) => {
+const mdLinks = (path, validate, stats) => {
   return new Promise((resolve, reject) => {
     const valiteRoute = changeAbsolute(path);
     const exists = existRoute(valiteRoute);
@@ -19,19 +20,31 @@ const mdLinks = (path, validate) => {
       readFile
         .then((data) => {
           const links = extractLinks(data, valiteRoute);
-          if (validate) {
+          if (validate && stats) {
             validateLink(links)
-            .then((validateLink) => {
-              resolve(validateLink);
-            })
-            .catch((error) => {
-              reject(error);
-            });
-          } else { 
-            resolve(links)
+              .then((validatedLink) => {
+                return statsLinks(validatedLink);
+              })
+              .then((statsResult) => {
+                resolve(statsResult);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          } else if (validate) {
+            validateLink(links)
+              .then((validatedLinks) => {
+                resolve(validatedLinks);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          } else if (stats) {
+                resolve(statsLinks(links)); 
+          } else {
+            resolve(links);
           }
         })
-
         .catch((error) => {
           reject(error);
         });
