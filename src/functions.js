@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const axios = require("axios");
+const { log } = require("console");
 
 const routeAbsolut = (route) => path.isAbsolute(route);
 const changeAbsolute = (route) => {
@@ -57,35 +58,23 @@ const validateLink = (links) => {
     return axios
       .get(link.url)
       .then((response) => {
-        return {...link, status: response.status, statusText: response.statusText}
+        return {
+          ...link,
+          status: response.status,
+          statusText: response.statusText,
+        };
       })
       .catch((error) => {
-        return {...link, status: error.response?.status ?? 'fail' , statusText: "fail"}
-      }); 
-      
-  }); 
-  
-  return Promise.all(newLinks)
-  
-};
+        return {
+          ...link,
+          status: error.response?.status ?? "fail",
+          statusText: "fail",
+        };
+      });
+  });
 
-// const statsLinks = (newLinks) => {
-//   return new Promise ((resolve, reject) => {
-//   const countLinks = newLinks.filter((link) => {
-//   return link.statusText == 'fail';
-//   });
-//   const totalLinks = newLinks.length;
-//   const uniqueLinks= [...new Set(newLinks.map((link) => link.url))].length;
-//   const validLinksCount = countLinks.length;
-//   console.log( totalLinks, uniqueLinks, validLinksCount, 'por aca');
-//   const statsValidate = {
-//     Total: totalLinks,
-//     Unique: uniqueLinks,
-//     Broken: validLinksCount
-//   };
-//     resolve(statsValidate);
-//   });
-// };
+  return Promise.all(newLinks);
+};
 
 const statsLinks = (links) => {
   return new Promise((resolve, reject) => {
