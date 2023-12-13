@@ -1,3 +1,4 @@
+#!/user/bin/env node
 const { mdLinks } = require("./md-links");
 const argv = process.argv;
 const file = argv[2];
@@ -7,14 +8,12 @@ const stats = argv.includes("--stats");
 mdLinks(file, validate, stats)
   .then((links) => {
 	if (validate && stats){
-		console.log(links);
+		console.table(links);
 	} else if (stats) {
-      console.log(Object.fromEntries(Object.entries(links).slice(0, 2)));
+      console.table(Object.fromEntries(Object.entries(links).slice(0, 2)));
     } else {
       console.log(links);
     }
   })
-
-  // .then(links => console.log(links))
 
   .catch((error) => console.error(error));

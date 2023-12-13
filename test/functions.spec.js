@@ -20,7 +20,7 @@ describe("mdLinks", () => {
   });
 
   it("reject ...", () => {
-    const route =  mdLinks("./test/molienda.js");
+    const route = mdLinks("./test/molienda.js");
     expect(route).rejects.toEqual("Error: La ruta no existe");
   });
 
@@ -31,57 +31,65 @@ describe("mdLinks", () => {
         text: "Markdown",
         file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn",
       },
-    ]
-    const route =  mdLinks("./test/molienda.mdwn");
-    expect(route).resolves.toEqual(result);
-  });
-  
-  it("resuelve un array con validate", () => {
-    const route =  mdLinks("./test/molienda.mdwn", true);
-    const result = [
-      {
-        url: 'https://es.wikipedia.org/wiki/Markdown',
-        text: 'Markdown',
-        file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn',
-        status: 404,
-        statusText: 'fail'
-      }
     ];
+    const route = mdLinks("./test/molienda.mdwn");
     expect(route).resolves.toEqual(result);
   });
 
-  it("stats", () => {
-    const route =  mdLinks("./test/molienda.mdwn", true);
-    const statsResult = statsLinks([
-      {
-        url: 'https://nodejs.org/es/',
-        text: 'Node.js',
-        file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md',
-        status: 404,
-        statusText: 'fail'
-      }
-    ])
-    const result = { Total: 1, Unique: 1, Broken: 1 };
-    expect(statsResult).resolves.toEqual(result);
+  it("readfile", async() => {
+    const result = "[Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado"
+    const links = await readRoute("./test/molienda.mdwn");
+    expect(links).toEqual(result);
   });
 
   it("extractLinks retorna array de objeto", () => {
     const result = [
       {
-        url: 'https://www.node.org', text: 'node', file: 'file.md'
-      }
-    ]
-    
-    const links = extractLinks("[node](https://www.node.org)", 'file.md');
-    expect(links).toEqual(result)
+        url: "https://www.node.org",
+        text: "node",
+        file: "file.md",
+      },
+    ];
+    const links = extractLinks("[node](https://www.node.org)", "file.md");
+    expect(links).toEqual(result);
   });
+
+
+  it("resuelve un array con validate", () => {
+    const route = mdLinks("./test/molienda.mdwn", true, false);
+    const result = [
+      {
+        url: "https://es.wikipedia.org/wiki/Markdown",
+        text: "Markdown",
+        file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn",
+        status: 404,
+        statusText: "fail",
+      },
+    ];
+    expect(route).resolves.toEqual(result);
+  });
+
+  it("retorna objeto con validate y stats", () => {
+    const file = "./test/molienda.mdwn";
+    const expectedOutput = { Total: 1, Unique: 1, Broken: 1 };
+
+    const result = mdLinks(file, true, true);
+    expect(result).resolves.toEqual(expectedOutput);
+  });
+
+  it("retorna objeto  stats", () => {
+    const file = "./test/molienda.mdwn";
+    const expectedOutput = { Total: 1, Unique: 1, Broken: 0 };
+    const result = mdLinks(file, false, true);
+    expect(result).resolves.toEqual(expectedOutput);
+  });
+
+
 
   it("hay un error", () => {
     const result = mdLinks("./test/prueba.js");
     expect(result).rejects.toThrowError();
   });
-
-  
 });
 
 describe("routeAbsolut", () => {
@@ -166,7 +174,7 @@ describe("validateLink", () => {
         url: "https://es.wikipedia.org/wiki/Markdown",
         text: "Markdown",
         file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn",
-      }
+      },
     ];
     const validate = await validateLink(links);
     const result = [
@@ -176,7 +184,7 @@ describe("validateLink", () => {
         file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/test/molienda.mdwn",
         status: 200,
         statusText: "OK",
-      }
+      },
     ];
     expect(validate).toEqual(result);
   });
@@ -184,45 +192,41 @@ describe("validateLink", () => {
 
 describe("validateLink", () => {
   it("error en la solicitud", async () => {
-    axios.get.mockRejectedValue({response: { status: 404 }});
+    axios.get.mockRejectedValue({ response: { status: 404 } });
     const links = [
       {
         url: "https://nodejs.org/es/",
         text: "Node.js",
         file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md",
-      }
+      },
     ];
     const validate = await validateLink(links);
     const result = [
       {
-        url: 'https://nodejs.org/es/',
-        text: 'Node.js',
-        file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md',
+        url: "https://nodejs.org/es/",
+        text: "Node.js",
+        file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md",
         status: 404,
-        statusText: 'fail'
-      }
+        statusText: "fail",
+      },
     ];
     expect(validate).toEqual(result);
   });
 });
 
-describe('statsLinks', () =>{
-  it ('muestra las estadisticas', async () =>{
+describe("statsLinks", () => {
+  it("muestra las estadisticas", async () => {
     const data = [
       {
-        url: 'https://nodejs.org/es/',
-        text: 'Node.js',
-        file: '/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md',
+        url: "https://nodejs.org/es/",
+        text: "Node.js",
+        file: "/Users/marcelaavellaneda/Documents/LABORATORIA/DEV011-md-links/prueba/prueba.md",
         status: 404,
-        statusText: 'fail'
-      }
-    ]
+        statusText: "fail",
+      },
+    ];
     const links = await statsLinks(data);
     const result = { Total: 1, Unique: 1, Broken: 1 };
     expect(links).toEqual(result);
-
-
-  })
-
-
-})
+  });
+});
