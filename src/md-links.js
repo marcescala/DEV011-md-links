@@ -27,17 +27,11 @@ const mdLinks = (path, validate, stats) => {
               })
               .then((statsResult) => {
                 resolve(statsResult);
-              })
-              .catch((error) => {
-                reject(error);
               });
           } else if (validate) {
             validateLink(links)
               .then((validatedLinks) => {
                 resolve(validatedLinks);
-              })
-              .catch((error) => {
-                reject(error);
               });
           } else if (stats) {
                 resolve(statsLinks(links)); 
