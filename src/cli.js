@@ -1,4 +1,4 @@
-#!/user/bin/env node
+#!/usr/local/bin/node
 const { mdLinks } = require("./md-links");
 const argv = process.argv;
 const file = argv[2];
