@@ -1,8 +1,23 @@
 {
   "name": "marcescala-md-links",
   "version": "1.1.0",
+  "description": "librería de Node.js que te permite encontrar y validar enlaces en archivos Markdown. información detallada sobre los enlaces,  su estado y la cantidad total.",
+  "main": "cli.js",
   "engines": {
     "node": ">=16.x"
+  },
+  "author": {
+    "name": "Marcela Avellaneda", 
+    "email": "marcescala@yahoo.com",
+    "url": "https://www.linkedin.com/in/marcela-avellaneda-64489b291/"
+  },
+  "keywords": [
+    "links",
+    "Markdown"
+],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marcescala/DEV011-md-links"
   },
   "bin": {
     "md-links": "src/cli.js"
